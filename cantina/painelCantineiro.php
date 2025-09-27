@@ -71,22 +71,17 @@ function carregarPagina(pagina){
   else if(pagina==='estoque') renderEstoque();
   else if(pagina==='config') renderConfig();
 }
+async function renderPedidos() {
+  const res = await fetch('getPedidos.php');
+  const pedidos = await res.json();
 
-function renderPedidos(){
-  const pedidos = [
-    {id:1, nome:"Pedro Aluno", status:"pendente", produto:"Suco Natural x2"},
-    {id:2, nome:"Maria Responsavel", status:"confirmado", produto:"Sanduíche"},
-    {id:3, nome:"João Aluno", status:"entregue", produto:"Água"},
-    {id:4, nome:"Ana Aluno", status:"cancelado", produto:"Suco Natural"}
-    
-  ];
   const statuses=["pendente","confirmado","entregue","cancelado"];
   let html = `<div class="kanban">`;
   statuses.forEach(status=>{
     html += `<div class="kanban-coluna" data-status="${status}">
                <h3>${status.charAt(0).toUpperCase()+status.slice(1)}</h3>`;
     pedidos.filter(p=>p.status===status).forEach(p=>{
-      html += `<div class="kanban-card" data-id="${p.id}">
+      html += `<div class="kanban-card" data-id="${p.id}" data-email="${p.email}">
                  <strong>${p.nome}</strong><br>${p.produto}
                </div>`;
     });
@@ -99,12 +94,26 @@ function renderPedidos(){
     new Sortable(col,{
       group:'kanban',
       animation:150,
-      filter:'h3', 
-      onAdd: function(evt){
+      filter:'h3',
+      onAdd: async function(evt){
         const cardId = evt.item.dataset.id;
         const novoStatus = evt.to.dataset.status;
-        const pedido = pedidos.find(p=>p.id==cardId);
-        if(pedido) pedido.status = novoStatus;
+
+        // Atualiza status no banco
+        await fetch('updatePedido.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({id:cardId, status:novoStatus})
+        });
+
+        // Envia notificação (email ou qualquer outro canal)
+        const email = evt.item.dataset.email;
+        await fetch('notificar.php', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({email, status:novoStatus})
+        });
+
         console.log(`Pedido ${cardId} agora está ${novoStatus}`);
       }
     });

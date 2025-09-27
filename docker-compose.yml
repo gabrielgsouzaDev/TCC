@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    image: php:8.2-apache
+    container_name: ctnapp_app
+    volumes:
+      - ./:/var/www/html
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - ctnapp_network
+
+  db:
+    image: mysql:8.0
+    container_name: ctnapp_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: CTNAPP
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - ctnapp_network
+    volumes:
+      - db_data:/var/lib/mysql
+
+networks:
+  ctnapp_network:
+    driver: bridge
+
+volumes:
+  db_data:

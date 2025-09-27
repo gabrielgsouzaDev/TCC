@@ -32,7 +32,7 @@ try {
     $stmt = $pdo->query("
         SELECT COUNT(*) AS total 
         FROM tb_pedidos 
-        WHERE MONTH(dt_pedido) = MONTH(CURDATE()) 
+        WHERE MONTH(dt_pedido) = MONTH(CURDATE())
           AND YEAR(dt_pedido) = YEAR(CURDATE())
     ");
     $pedidosMes = (int)($stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);

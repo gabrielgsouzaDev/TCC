@@ -1,5 +1,5 @@
 <?php
-$host = 'db'; // <--- aqui, não localhost
+$host = 'db'; // nome do serviço MySQL no Docker
 $dbname = 'CTNAPP';
 $username = 'root';
 $password = 'root'; // se deixar vazio, configure o MYSQL_PASSWORD também

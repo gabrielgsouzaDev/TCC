@@ -47,7 +47,7 @@ try {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $graficoPedidos[(int)$row['mes'] - 1] = (int)$row['total'];
     }
-
+    
     echo json_encode([
         'escolasAtivas' => $escolasAtivas,
         'usuariosResumo' => $usuariosResumo,

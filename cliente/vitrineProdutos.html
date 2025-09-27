@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .topo-barra {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #460606;
+            /* crimson */
+            color: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .caixa-pesquisa {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 20px;
+        }
+
+        .pesquisa {
+            display: flex;
+            width: 100%;
+            position: relative;
+        }
+
+        .pesquisa input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .pesquisa input:focus {
+            border-color: #dc143c;
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+        }
+
+        .pesquisa button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #dc143c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .pesquisa button:hover {
+            background: #b20028;
+        }
+
+        .icones-cabecalho {
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .item-icone {
+            position: relative;
+            cursor: pointer;
+            color: #ffffff;
+            border: solid 1px white;
+            border-radius: 18px;
+            padding: 2px 6px;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .texto-icone {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .contador-carrinho,
+        .contador-favoritos {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff3232;
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Navegação */
+        nav {
+            background-color: #fff;
+            padding: 15px 30px;
+        }
+
+        .container-navegacao {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .categorias {
+            display: flex;
+            gap: 30px;
+        }
+
+        .item-categoria {
+            font-weight: 500;
+            color: #555;
+            text-decoration: none;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .item-categoria:hover,
+        .item-categoria.ativo {
+            color: crimson;
+        }
+
+        .item-categoria.ativo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #dc143c;
+            border-radius: 3px;
+        }
+
+        .botao-menu-mobile {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #8b0000;
+            cursor: pointer;
+        }
+
+
+        body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.background-svg {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;   
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+        /* Seção Principal */
+        .secao-principal {
+            background: white;
+            border: solid 1px crimson;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .conteudo-principal {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin: 0 auto;
+            padding-right: 200px;
+            padding-left: 50px;
+        }
+
+        .texto-principal {
+            flex: 1;
+        }
+
+        .secao-principal h1 {
+            font-size: 48px;
+            font-weight: 700;
+
+            color: crimson;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .secao-principal p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+
+        .botao {
+            display: inline-block;
+            background: white;
+            color: #dc143c;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: solid 1px crimson;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .imagem-principal {
+            flex: 1;
+            text-align: right;
+        }
+
+        .imagem-principal img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .grade-produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .cartao-produto {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cartao-produto:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .selo-produto {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .imagem-produto {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .imagem-produto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .cartao-produto:hover .imagem-produto img {
+            transform: scale(1.1);
+        }
+
+        .informacoes-produto {
+            padding: 20px;
+        }
+
+        .categoria-produto {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .titulo-produto {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .avaliacao-produto {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .estrelas {
+            color: #f39c12;
+            margin-right: 8px;
+        }
+
+        .avaliacoes {
+            color: #7f8c8d;
+        }
+
+        .preco-produto {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .acoes-produto {
+            display: flex;
+            gap: 10px;
+        }
+
+        .botao-outline {
+            flex: 1;
+            background: white;
+            color: #dc143c;
+            border: 2px solid #dc143c;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .botao-outline:hover {
+            background: #dc143c;
+            color: white;
+        }
+
+        .botao-primario {
+            flex: 1;
+            background: #dc143c;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .botao-primario:hover {
+            background: #b20028;
+            transform: translateY(-2px);
+        }
+
+
+        /* Rodapé */
+        footer {
+            background-color: #460606;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .conteudo-rodape {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .coluna-rodape h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .coluna-rodape h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #dc143c;
+        }
+
+        .links-rodape {
+            list-style: none;
+        }
+
+        .links-rodape li {
+            margin-bottom: 10px;
+        }
+
+        .links-rodape a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .links-rodape a:hover {
+            color: #dc143c;
+        }
+
+        .links-sociais {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .links-sociais a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .links-sociais a:hover {
+            background: #dc143c;
+            transform: translateY(-3px);
+        }
+
+        .rodape-inferior {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* Design Responsivo */
+        @media (max-width: 1024px) {
+            .conteudo-principal {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .texto-principal {
+                margin-bottom: 30px;
+            }
+
+            .secao-principal h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .caixa-pesquisa {
+                margin: 0 10px;
+            }
+
+            .categorias {
+                gap: 15px;
+            }
+
+            .item-categoria {
+                font-size: 14px;
+            }
+
+            .botao-menu-mobile {
+                display: block;
+            }
+
+            .categorias {
+                display: none;
+                flex-direction: column;
+                background: white;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                margin: 10px 20px;
+            }
+
+            .categorias.mostrar {
+                display: flex;
+            }
+
+            .secao-principal h1 {
+                font-size: 32px;
+            }
+
+            .secao-principal p {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .titulo-secao {
+                font-size: 28px;
+            }
+
+            .grade-produtos {
+                grid-template-columns: 1fr;
+            }
+
+            .preco-produto {
+                font-size: 20px;
+            }
+
+            .botao {
+                padding: 10px 20px;
+            }
+        }
+
+        /* Animação */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cartao-produto {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .cartao-produto:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .cartao-produto:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .cartao-produto:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .cartao-produto:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .cartao-produto:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .cartao-produto:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="../img/fundoInicio.svg" alt="Fundo do site" class="background-svg">
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container">
+            <div class="topo-barra">
+                <a href="#" class="logo">CTNAPP</a>
+                <div class="caixa-pesquisa">
+                    <div class="pesquisa">
+                        <input type="text" placeholder="Pesquisar produtos...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="icones-cabecalho">
+                    <div class="item-icone">
+                        <i class="fas fa-user" style="color: #ffffff;"></i>
+                        <span class="texto-icone">Perfil</span>
+                    </div>
+                    <div class="item-icone">
+                        <i class="fas fa-heart" style="color: #ffffff;"></i>
+                        <span class="texto-icone">Favoritos</span>
+                    </div>
+                    <div class="item-icone">
+                        <i class="fas fa-shopping-cart" style="color: #ffffff;"></i>
+                        <span class="texto-icone">Carrinho</span>
+                        <span class="contador-carrinho">2</span>
+                    </div>
+                    <div class="item-icone">
+                        <i class="fas fa-box" style="color: #ffffff;"></i>
+                        <span class="texto-icone">Pedidos</span>
+                    </div>
+                </div>
+                <button class="botao-menu-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <nav>
+            <div class="container">
+                <div class="container-navegacao">
+                    <div class="categorias">
+                        <a href="#" class="item-categoria ativo">Todos</a>
+                        <a href="#" class="item-categoria">Lanches</a>
+                        <a href="#" class="item-categoria">Salgados</a>
+                        <a href="#" class="item-categoria">Bebidas</a>
+                        <a href="#" class="item-categoria">Refeições</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Seção Principal -->
+        <section class="secao-principal">
+            <div class="container">
+                <div class="conteudo-principal">
+                    <div class="texto-principal">
+                        <h1>Peça sua Refeição Escolar</h1>
+                        <p>Escolha entre os melhores lanches, salgados e bebidas da cantina escolar. Entrega rápida no
+                            horário do recreio!</p>
+                        <a href="#" class="botao">Fazer Pedido</a>
+                    </div>
+                    <div class="imagem-principal">
+                        <img src="https://placehold.co/500x300/dc143c/white?text=Lanches+Escolares"
+                            alt="Lanches escolares">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grade-produtos">
+            <!-- Produto 1 -->
+            <div class="cartao-produto">
+                <div class="selo-produto">Novo</div>
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Hambúrguer" alt="Hambúrguer">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Lanches</div>
+                    <h3 class="titulo-produto">Hambúrguer Artesanal</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="avaliacoes">(45)</span>
+                    </div>
+                    <div class="preco-produto">R$ 12,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 2 -->
+            <div class="cartao-produto">
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Coxinha" alt="Coxinha">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Salgados</div>
+                    <h3 class="titulo-produto">Coxinha de Frango</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="avaliacoes">(32)</span>
+                    </div>
+                    <div class="preco-produto">R$ 5,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 3 -->
+            <div class="cartao-produto">
+                <div class="selo-produto">Oferta</div>
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Combo" alt="Combo">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Lanches</div>
+                    <h3 class="titulo-produto">Combo Especial</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="avaliacoes">(67)</span>
+                    </div>
+                    <div class="preco-produto">R$ 18,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 4 -->
+            <div class="cartao-produto">
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Suco" alt="Suco">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Bebidas</div>
+                    <h3 class="titulo-produto">Suco Natural 500ml</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="avaliacoes">(28)</span>
+                    </div>
+                    <div class="preco-produto">R$ 8,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 5 -->
+            <div class="cartao-produto">
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Pizza" alt="Pizza">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Salgados</div>
+                    <h3 class="titulo-produto">Pizza de Calabresa</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="avaliacoes">(41)</span>
+                    </div>
+                    <div class="preco-produto">R$ 15,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 6 -->
+            <div class="cartao-produto">
+                <div class="selo-produto">Lançamento</div>
+                <div class="imagem-produto">
+                    <img src="https://placehold.co/300x200/dc143c/white?text=Brigadeiro" alt="Brigadeiro">
+                </div>
+                <div class="informacoes-produto">
+                    <div class="categoria-produto">Sobremesas</div>
+                    <h3 class="titulo-produto">Brigadeiro Gourmet</h3>
+                    <div class="avaliacao-produto">
+                        <div class="estrelas">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="avaliacoes">(19)</span>
+                    </div>
+                    <div class="preco-produto">R$ 4,90</div>
+                    <div class="acoes-produto">
+                        <a href="#" class="botao-outline"><i class="far fa-heart"></i></a>
+                        <a href="#" class="botao-primario"><i class="fas fa-shopping-cart"></i> Pedir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p style="text-align: center;">&copy; 2025 CTNAPP - v3 - página em desenvovimento
+        </p>
+    </footer>
+
+    <script>
+        // Menu mobile
+        const botaoMenuMobile = document.querySelector('.botao-menu-mobile');
+        const categorias = document.querySelector('.categorias');
+
+        botaoMenuMobile.addEventListener('click', () => {
+            categorias.classList.toggle('mostrar');
+        });
+
+        // Fechar menu mobile ao clicar em uma categoria
+        document.querySelectorAll('.item-categoria').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    categorias.classList.remove('mostrar');
+                }
+            });
+        });
+
+        // Destaque da categoria ativa
+        document.querySelectorAll('.item-categoria').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector('.item-categoria.ativo').classList.remove('ativo');
+                this.classList.add('ativo');
+            });
+        });
+    </script>
+</body>
+
+</html>

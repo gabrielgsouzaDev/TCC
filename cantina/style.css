@@ -1,0 +1,255 @@
+:root {
+  --cor-fundo: #f8f2f3;
+  --cor-branco: #ffffff;
+  --cor-titulo: #7a1523;
+  --cor-texto: #4d4d4d;
+  --cor-borda: #d8b0b5;
+  --cor-principal: #a71d31;
+  --cor-principal-hover: #7a1523;
+  --cor-secundaria: #e57373;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  background: var(--cor-fundo);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Estrutura principal */
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Menu lateral (fundo claro) ===== */
+.menu-lateral {
+  width: 250px;
+  background: var(--cor-branco);
+  border-right: 1px solid var(--cor-borda);
+  position: fixed;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.menu-lateral h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cor-principal);
+  margin-bottom: .25rem;
+}
+
+.menu-lateral p {
+  font-size: .9rem;
+  color: var(--cor-texto);
+  margin-bottom: .75rem;
+}
+
+.menu-lateral nav {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+/* Botões do menu */
+.menu-lateral .item {
+  display: block;
+  width: 100%;
+  background: var(--cor-branco);
+  color: var(--cor-texto);
+  border: 1px solid transparent;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .05s, border-color .2s;
+}
+
+.menu-lateral .item:hover {
+  background: #f9e4e7;               /* tom suave da paleta */
+  border-color: var(--cor-borda);
+}
+
+.menu-lateral .item:active {
+  transform: translateY(1px);
+}
+
+.menu-lateral .item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 29, 49, 0.18); /* var(--cor-principal) com alpha */
+  border-color: var(--cor-principal);
+}
+
+/* Estado ativo (seção atual) */
+.menu-lateral .item.ativo {
+  background: #faecee;
+  border-left: 4px solid var(--cor-principal);
+  font-weight: 700;
+}
+
+/* Sair */
+.menu-lateral .item.sair {
+  color: #b00020;                     /* vermelho legível em fundo claro */
+  background: #fff6f7;
+  border-color: #ffd8dd;
+}
+
+.menu-lateral .item.sair:hover {
+  background: #ffecee;
+  border-color: #ffccd2;
+}
+
+/* Área de conteúdo deslocada pela sidebar */
+.conteudo {
+  margin-left: 250px;
+  padding: 2rem;
+  width: calc(100% - 250px);
+}
+
+
+/* Área de conteúdo */
+.conteudo {
+  margin-left: 250px;
+  padding: 2rem;
+  width: calc(100% - 250px);
+}
+
+.titulo {
+  font-size: 1.8rem;
+  color: var(--cor-titulo);
+  margin-bottom: 1.5rem;
+}
+
+/* Perfil */
+.perfil {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.perfil img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-principal);
+  margin-right: 10px;
+}
+
+/* Cards */
+.card {
+  background: var(--cor-branco);
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--cor-titulo);
+}
+
+.card p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--cor-principal);
+  margin-top: 0.5rem;
+}
+
+/* Tabela de pedidos */
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela th, .tabela td {
+  border: 1px solid var(--cor-borda);
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.tabela th {
+  background: #faecee;
+  color: var(--cor-titulo);
+  font-weight: bold;
+}
+
+.status {
+  font-weight: bold;
+  color: var(--cor-secundaria);
+}
+
+.status-concluido {
+  color: green;
+}
+
+.status-andamento {
+  color: orange;
+}
+
+/* Botões */
+.botao {
+  background: var(--cor-principal);
+  color: var(--cor-branco);
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 4px 8px rgba(167, 29, 49, 0.3);
+}
+
+.botao:hover {
+  background: var(--cor-principal-hover);
+}
+
+.botao:active {
+  transform: scale(0.95);
+}
+
+.botao-verde {
+  background: green;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.3);
+}
+
+.botao-verde:hover {
+  background: darkgreen;
+}
+
+.botao-vermelho {
+  background: #e53935;
+  box-shadow: 0 4px 8px rgba(229, 57, 53, 0.3);
+}
+
+.botao-vermelho:hover {
+  background: #b71c1c;
+}

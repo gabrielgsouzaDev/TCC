@@ -1,5 +1,3 @@
-<!-- Tela Esqueci Senha -->
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -14,7 +12,7 @@
     <img src="../img/fundoAuth.svg" alt="Fundo do site" class="background-svg">
     <div class="container">
         <div class="link-back">
-            <a href="login.php">← Voltar para login</a>
+            <a href="cadEscola.php">← Voltar para login</a>
         </div>
 
         <h2>Recuperar Senha</h2>
@@ -31,7 +29,7 @@
             </button>
         </form>
         <div class="link">
-            Lembrou a senha? <a href="login.php">Entrar</a>
+            Lembrou a senha? <a href="cadEscola.php">Entrar</a>
         </div>
     </div>
 

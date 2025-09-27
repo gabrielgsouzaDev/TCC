@@ -214,7 +214,7 @@
 </style>
 
     <div class="link">
-      <a href="LembrarSenha.php">Esqueci minha senha</a>
+      <a href="lembrarSenha.php">Esqueci minha senha</a>
     </div>
 
   <script>

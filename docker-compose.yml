@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   app:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ctnapp_app
     volumes:
       - ./:/var/www/html
@@ -21,10 +23,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: CTNAPP
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - ctnapp_network
     volumes:

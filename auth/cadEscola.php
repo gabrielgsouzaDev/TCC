@@ -272,14 +272,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
  function toggleSenha(id) {
   const input = document.getElementById(id);
   input.type = input.type === "password" ? "text" : "password";
-}
+  }
 
-const escola = document.getElementById("escola");
-const cantineiro = document.getElementById("cantineiro");
-const titulo = document.getElementById("tituloLogin");
-const aviso = document.getElementById("sub-text");
-const formLogin = document.getElementById("formLogin");
-const formCadastro = document.getElementById("formCadastro"); // já existe
+  const escola = document.getElementById("escola");
+  const cantineiro = document.getElementById("cantineiro");
+  const titulo = document.getElementById("tituloLogin");
+  const aviso = document.getElementById("sub-text");
+  const formLogin = document.getElementById("formLogin");
+  const formCadastro = document.getElementById("formCadastro"); // já existe
 
 // event listeners das abas
 escola.addEventListener("click", () => {
@@ -316,13 +316,21 @@ function showStep(index) {
 function updateResumo() {
   const resumo = document.getElementById('resumoCadastro');
   resumo.innerHTML = '';
+
+  // Corrigido: pegar endereço direto dos campos existentes
+  const endereco = `
+    ${form.logradouro.value}, ${form.numero.value}${form.complemento.value ? ' - ' + form.complemento.value : ''}, 
+    ${form.bairro.value}, ${form.cidade.value} - ${form.estado.value}, CEP: ${form.cep.value}
+  `;
+
   const fields = [
     {label: 'Nome da Escola', value: form.EscolaNome.value},
     {label: 'CNPJ', value: form.EscolaCNPJ.value},
-    {label: 'Endereço', value: form.EscolaEndereco.value},
+    {label: 'Endereço', value: endereco},
     {label: 'Nome do Responsável', value: form.ResponsavelNome.value},
     {label: 'Email Institucional', value: form.CantEmail.value},
   ];
+
   fields.forEach(field => {
     const li = document.createElement('li');
     li.textContent = `${field.label}: ${field.value}`;

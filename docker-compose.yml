@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ctnapp_app
+    container_name: ctnapp2_app
     volumes:
       - ./:/var/www/html
       - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
@@ -18,11 +18,11 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: ctnapp_db
+    container_name: ctnapp2_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: CTNAPP
+      MYSQL_DATABASE: ctnapp
     ports:
       - "3307:3306"
     networks:

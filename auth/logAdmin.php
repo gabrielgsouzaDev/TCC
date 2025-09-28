@@ -8,20 +8,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email'] ?? '');
     $senha = $_POST['password'] ?? '';
 
-    // Valida email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $mensagem = "❌ E-mail inválido!";
     } else {
-        // Consulta segura ao banco usando o nome correto das colunas
         $sql = "SELECT * FROM tb_admin WHERE email = :email LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($admin) {
-            // Verifica a senha usando password_verify
             if (password_verify($senha, $admin['senha_hash'])) {
-                // Login OK
                 $_SESSION['admin_id'] = $admin['id_admin'];
                 $_SESSION['admin_nome'] = $admin['nome'];
                 header("Location: ../admin/painelAdmin.php");

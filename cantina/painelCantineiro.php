@@ -99,14 +99,12 @@ async function renderPedidos() {
         const cardId = evt.item.dataset.id;
         const novoStatus = evt.to.dataset.status;
 
-        // Atualiza status no banco
         await fetch('updatePedido.php', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body: JSON.stringify({id:cardId, status:novoStatus})
         });
 
-        // Envia notificação (email ou qualquer outro canal)
         const email = evt.item.dataset.email;
         await fetch('notificar.php', {
           method:'POST',

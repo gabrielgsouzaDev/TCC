@@ -27,7 +27,7 @@ function enviarCodigo($email, $Codigo){
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Verifica se sessão de email existe e pertence a uma escola
+ 
     if (empty($_SESSION['email_recuperacao'])) {
         echo "<script>alert('Erro: Inicie o processo de recuperação novamente.');</script>";
         echo "<script>window.location.href='lembrarSenha.php';</script>";
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_SESSION['email_recuperacao'];
 
-    // Confere se o email realmente existe na tabela tb_escola
+
     $stmt = $pdo->prepare("SELECT email_contato FROM tb_escola WHERE email_contato = :email");
     $stmt->execute([':email' => $email]);
     if (!$stmt->fetchColumn()) {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Validação do código
+     
     if (!empty($_POST['Cod']) && $_POST['Cod'] === ($_SESSION['codigo_recuperacao'] ?? '')) {
         header("Location: alterarSenha.php");
         exit;

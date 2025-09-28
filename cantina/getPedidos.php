@@ -1,9 +1,8 @@
 <?php
 header('Content-Type: application/json');
-include("../banco/conexao.php"); // seu arquivo de conexão PDO
+include("../banco/conexao.php");
 
 try {
-    // Puxa pedidos com info do aluno e responsável
     $stmt = $pdo->query("
         SELECT p.id_pedido AS id,
                COALESCE(a.nome, r.nome) AS nome,

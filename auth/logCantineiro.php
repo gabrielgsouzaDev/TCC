@@ -4,7 +4,7 @@ include("../banco/conexao.php");
 
   if(isset($_POST['email'])){
     if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-      $dominio = substr(strrchr($_POST['email'], "@"), 1); // pega só o domínio
+      $dominio = substr(strrchr($_POST['email'], "@"), 1);
 
       if(checkdnsrr($dominio, "MX")){
 
@@ -38,7 +38,7 @@ include("../banco/conexao.php");
               ':senha' => $_POST['password'],
               ':cod' => $_POST['CodCantina'],
             ]);
-            echo "<script>alert('Usuario Cadastrado Com Sucesso'); window.location.href='escola.php';</script>";
+            echo "<script>alert('Usuario Cadastrado Com Sucesso'); window.location.href='../cantina/painelCantineiro.php';</script>";
           }
         }
       }

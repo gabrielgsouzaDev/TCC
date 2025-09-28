@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $mensagem = "❌ Email inválido.";
     } else {
-        // Verifica se já existe admin com esse email
         $sql = "SELECT id_admin FROM tb_admin WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
@@ -22,10 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($stmt->rowCount() > 0) {
             $mensagem = "⚠️ Já existe um administrador com esse e-mail.";
         } else {
-            // Cria hash da senha
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-            // Insere no banco
             $sqlInsert = "INSERT INTO tb_admin (nome, email, senha_hash) 
                           VALUES (:nome, :email, :senha)";
             $stmtInsert = $pdo->prepare($sqlInsert);

@@ -1,8 +1,8 @@
 <?php
-$host = 'db'; // nome do serviço MySQL no Docker
+$host = 'db';
 $dbname = 'ctnapp';
 $username = 'root';
-$password = 'root'; // se deixar vazio, configure o MYSQL_PASSWORD também
+$password = 'root';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

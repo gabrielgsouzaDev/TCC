@@ -139,18 +139,14 @@
     menuLateral.classList.toggle('aberto');
   });
 
-  // Alternar entre páginas
   const botoesMenu = menuLateral.querySelectorAll('button');
   const conteudoPrincipal = document.querySelector('.conteudo-principal');
 
   botoesMenu.forEach(botao => {
     botao.addEventListener('click', () => {
-      // Remover classe 'ativo' de todos os botões
       botoesMenu.forEach(b => b.classList.remove('ativo'));
-      // Adicionar classe 'ativo' ao botão clicado
       botao.classList.add('ativo');
 
-      // Carregar a página correspondente
       const pagina = botao.getAttribute('data-pagina');
       carregarPagina(pagina);
     });
@@ -168,6 +164,5 @@
       });
   }
 
-  // Carregar a página inicial (dashboard) ao carregar o painel
   carregarPagina('dashboard');
 </script>

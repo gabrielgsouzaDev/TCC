@@ -1,22 +1,25 @@
 <?php
 include("../banco/conexao.php");
+session_start();
 
 // LOGIN ESCOLA
-if(isset($_POST['email']) && isset($_POST['senha'])){
-    $sql = "SELECT senha_hash FROM tb_escola WHERE email_contato = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':email' => $_POST['email']]);
-    $hash = $stmt->fetchColumn();
+if (isset($_POST['acao']) && $_POST['acao'] === 'login') {
+    if (!empty($_POST['email']) && !empty($_POST['senha'])) {
+        $sql = "SELECT cd_escola, senha_hash FROM tb_escola WHERE email_contato = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':email' => $_POST['email']]);
+        $dados = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if(!$hash){
-        echo "<script>alert('E-mail Não Encontrado, Tente Novamente!');</script>";
-    }elseif(!password_verify($_POST['senha'], $hash)){
-        echo "<script>alert('Senha Incorreta, Tente Novamente!');</script>";
-    }else{
-        // Login bem-sucedido
-        session_start();
-        $_SESSION['email_escola'] = $_POST['email'];
-        echo "<script>window.location.href='../escola/vitrineProdutos.html';</script>";
+        if (!$dados) {
+            echo "<script>alert('E-mail não encontrado. Tente novamente!');</script>";
+        } elseif (!password_verify($_POST['senha'], $dados['senha_hash'])) {
+            echo "<script>alert('Senha incorreta. Tente novamente!');</script>";
+        } else {
+            $_SESSION['escola_id'] = $dados['cd_escola'];
+            $_SESSION['email_escola'] = $_POST['email'];
+            echo "<script>window.location.href='../escola/painelEscola.php';</script>";
+            exit;
+        }
     }
 }
 
@@ -158,18 +161,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </p>
 
     <!-- LOGIN -->
-    <form id="formLogin" action="" method="POST">
-      <div class="form-group">
-        <input type="email" name="email" placeholder="Digite seu e-mail" required>
-      </div>
-      <div class="form-group senha">
-        <input type="password" name="senha" placeholder="Digite sua senha" id="senhaLogin" required>
-        <!--Olhinho de ver senha-->
-        <span class="ver-senha" onclick="toggleSenha('senhaLogin')">👁</span>
-      </div>
-      <button class="botao" type="submit">
-        <span class="texto">ENTRAR</span>
-      </button>
+<form id="formLogin" action="" method="POST">
+  <input type="hidden" name="acao" value="login">
+  <div class="form-group">
+    <input type="email" name="email" placeholder="Digite seu e-mail" required>
+  </div>
+  <div class="form-group senha">
+    <input type="password" name="senha" placeholder="Digite sua senha" id="senhaLogin" required>
+    <span class="ver-senha" onclick="toggleSenha('senhaLogin')">👁</span>
+  </div>
+  <button class="botao" type="submit">
+    <span class="texto">ENTRAR</span>
+  </button>
       
     <div class="link">
       <a href="lembrarSenha.php">Esqueci minha senha</a>
@@ -358,7 +361,6 @@ form.querySelectorAll('.proximo').forEach(btn => {
   });
 });
 
-// Botões Voltar
 form.querySelectorAll('.voltar').forEach(btn => {
   btn.addEventListener('click', () => {
     currentStep--;
@@ -367,7 +369,6 @@ form.querySelectorAll('.voltar').forEach(btn => {
   });
 });
 
-// Inicializa mostrando o primeiro passo
 showStep(currentStep);
 
 document.getElementById('cep').addEventListener('blur', function() {

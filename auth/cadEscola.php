@@ -1,57 +1,56 @@
-<!--Tela de login-->
 <?php
-  include("../banco/conexao.php");
+include("../banco/conexao.php");
 
-  if(isset($_POST['email'])){
-    $sql = "SELECT nm_email_usuario FROM tb_usuario WHERE nm_email_usuario = :email";
+// LOGIN ESCOLA
+if(isset($_POST['email']) && isset($_POST['senha'])){
+    $sql = "SELECT senha_hash FROM tb_escola WHERE email_contato = :email";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-      ':email' => $_POST['email'],
-    ]);
-    $existe = $stmt->fetchColumn();
-    if($existe < 1){
-      echo "<script>alert('E-mail Não Encontrado, Tente Novamente!');</script>";
-    }elseif(isset($_POST['senha'])){
-      $sql = "SELECT nm_email_usuario, cd_senha FROM tb_usuario WHERE nm_email_usuario = :email AND cd_senha = :senha";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([
-        ':email' => $_POST['email'],
-        ':senha' => $_POST['senha']
-      ]);
-      $existe = $stmt->fetchColumn();
-      if($existe < 1){
+    $stmt->execute([':email' => $_POST['email']]);
+    $hash = $stmt->fetchColumn();
+
+    if(!$hash){
+        echo "<script>alert('E-mail Não Encontrado, Tente Novamente!');</script>";
+    }elseif(!password_verify($_POST['senha'], $hash)){
         echo "<script>alert('Senha Incorreta, Tente Novamente!');</script>";
-      }else{
-        echo "<script>window.location.href='../escola/vitrineProdutos.html';</script>";
-      }
-    }
-  }
-
-  if(isset($_POST['CantEmail']) && isset($_POST['CantSenha'])){
-    $sql = "SELECT nm_email_cantineiro FROM tb_cantina WHERE nm_email_cantineiro = :CantEmail";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-      ':CantEmail' => $_POST['CantEmail'],
-    ]);
-    $existe = $stmt->fetchColumn();
-    if($existe < 1){
-      echo "<script>alert('E-mail Não Encontrado, Tente Novamente!');</script>";
     }else{
-      $sql = "SELECT nm_email_cantineiro, cd_senha_cantineiro FROM tb_cantina WHERE nm_email_cantineiro = :CantEmail AND cd_senha_cantineiro = :CantSenha";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([
-        ':CantEmail' => $_POST['CantEmail'],
-        ':CantSenha' => $_POST['CantSenha']
-      ]);
-      $existe = $stmt->fetchColumn();
-      if($existe < 1){
-        echo "<script>alert('Senha Incorreta, Tente Novamente!');</script>";
-      }else{
-        echo "<script>window.location.href='../cantina/painel.html';</script>";
-      }
+        // Login bem-sucedido
+        session_start();
+        $_SESSION['email_escola'] = $_POST['email'];
+        echo "<script>window.location.href='../escola/vitrineProdutos.html';</script>";
     }
-  }
+}
+
+// CADASTRO ESCOLA
+if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
+    // Verifica se o email já existe
+    $sql = "SELECT id_escola FROM tb_escola WHERE email_contato = :email";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':email' => $_POST['CantEmail']]);
+    $existe = $stmt->fetchColumn();
+
+    if($existe){
+        echo "<script>alert('E-mail já cadastrado. Faça login.');</script>";
+    } else {
+        // Hash da senha
+        $senhaHash = password_hash($_POST['CantSenha'], PASSWORD_DEFAULT);
+
+        // Inserir dados da escola
+        $sql = "INSERT INTO tb_escola (nome, cnpj, email_contato, senha_hash, id_endereco /*, id_plano */)
+                VALUES (:nome, :cnpj, :email, :senha, NULL /*, NULL*/)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':nome' => $_POST['EscolaNome'],
+            ':cnpj' => $_POST['EscolaCNPJ'],
+            ':email' => $_POST['CantEmail'],
+            ':senha' => $senhaHash
+        ]);
+
+        echo "<script>alert('Cadastro realizado com sucesso!');</script>";
+        echo "<script>window.location.href='index.php';</script>";
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -59,7 +58,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="auth.css" />
-  <title>Login</title>
+  
+<style>
+  /* Ajustes para multi-step form */
+  fieldset {
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: var(--cor-branco);
+  }
+
+  legend {
+    font-weight: bold;
+    color: var(--cor-titulo);
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--cor-texto);
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  .form-navigation {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .form-navigation .botao {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+</style>
+
+  <title>Escola - Autenticação</title>
 </head>
 
 <body>
@@ -82,10 +130,10 @@
     <!-- LOGIN -->
     <form id="formLogin" action="" method="POST">
       <div class="form-group">
-        <input type="email" name="email" placeholder="Digite seu e-mail" requireD>
+        <input type="email" name="email" placeholder="Digite seu e-mail" required>
       </div>
       <div class="form-group senha">
-        <input type="password" name="senha" placeholder="Digite sua senha" id="senhaLogin" requireD>
+        <input type="password" name="senha" placeholder="Digite sua senha" id="senhaLogin" required>
         <!--Olhinho de ver senha-->
         <span class="ver-senha" onclick="toggleSenha('senhaLogin')">👁</span>
       </div>
@@ -95,7 +143,6 @@
     </form>
 
     <!-- CADASTRO -->
-<!-- CADASTRO -->
 <form id="formCadastro" action="" method="POST" style="display:none;">
 
   <!-- Step 1: Dados da Escola -->
@@ -165,142 +212,102 @@
 
 </form>
 
-<style>
-  /* Ajustes para multi-step form */
-  fieldset {
-    border: 1px solid var(--cor-borda);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: var(--cor-branco);
-  }
-
-  legend {
-    font-weight: bold;
-    color: var(--cor-titulo);
-    margin-bottom: 15px;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--cor-texto);
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--cor-borda);
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-
-  .form-navigation {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .form-navigation .botao {
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-</style>
-
     <div class="link">
       <a href="lembrarSenha.php">Esqueci minha senha</a>
     </div>
+<script>
+ function toggleSenha(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
 
-  <script>
-    function toggleSenha(id) {
-      const input = document.getElementById(id);
-      input.type = input.type === "password" ? "text" : "password";
-    }
+const escola = document.getElementById("escola");
+const cantineiro = document.getElementById("cantineiro");
+const titulo = document.getElementById("tituloLogin");
+const aviso = document.getElementById("sub-text");
+const formLogin = document.getElementById("formLogin");
+const formCadastro = document.getElementById("formCadastro"); // já existe
 
-    const escola = document.getElementById("escola");
-    const cantineiro = document.getElementById("cantineiro");
-    const titulo = document.getElementById("tituloLogin");
-    const aviso = document.getElementById("sub-text");
-    const formLogin = document.getElementById("formLogin");
-    const formCadastro = document.getElementById("formCadastro");
+// event listeners das abas
+escola.addEventListener("click", () => {
+  escola.classList.add("active");
+  cantineiro.classList.remove("active");
+  titulo.textContent = "Acesse sua Escola";
+  aviso.textContent = "Este acesso é exclusivo para escolas previamente cadastradas na plataforma.";
 
-    escola.addEventListener("click", () => {
-      escola.classList.add("active");
-      cantineiro.classList.remove("active");
-      titulo.textContent = "Acesse sua Escola";
-      aviso.textContent = "Este acesso é exclusivo para escolas previamente cadastradas na plataforma.";
+  formLogin.style.display = "block";
+  formCadastro.style.display = "none";
+});
 
-      formLogin.style.display = "block";
-      formCadastro.style.display = "none";
-    });
+cantineiro.addEventListener("click", () => {
+  cantineiro.classList.add("active");
+  escola.classList.remove("active");
+  titulo.textContent = "Cadastre sua Escola";
+  aviso.textContent = "Preencha o formulário multi-etapas para ativar sua conta com um pagamento único.\nO plano será ajustado automaticamente conforme o número de alunos ativados.";
 
-    cantineiro.addEventListener("click", () => {
-      cantineiro.classList.add("active");
-      escola.classList.remove("active");
-      titulo.textContent = "Cadastre sua Escola";
-      aviso.textContent = "Preencha o formulário multi-etapas para ativar sua conta com um pagamento único.\nO plano será ajustado automaticamente conforme o número de alunos ativados.";
+  formLogin.style.display = "none";
+  formCadastro.style.display = "block";
+});
 
-      formLogin.style.display = "none";
-      formCadastro.style.display = "block";
-    });
+// === Controle multi-step ===
+const form = formCadastro; // garante que a referência exista
+const steps = form.querySelectorAll('.step');
+let currentStep = 0;
 
-      // Controle básico multi-step sem mudar IDs/classes existentes
-  const form = document.getElementById('formCadastro');
-  const steps = form.querySelectorAll('.step');
-  let currentStep = 0;
-
-  function showStep(index) {
-    steps.forEach((step, i) => {
-      step.style.display = i === index ? 'block' : 'none';
-    });
-  }
-
-  function updateResumo() {
-    const resumo = document.getElementById('resumoCadastro');
-    resumo.innerHTML = '';
-    const fields = [
-      {label: 'Nome da Escola', value: form.EscolaNome.value},
-      {label: 'CNPJ', value: form.EscolaCNPJ.value},
-      {label: 'Endereço', value: form.EscolaEndereco.value},
-      {label: 'Nome do Responsável', value: form.ResponsavelNome.value},
-      {label: 'Email Institucional', value: form.CantEmail.value},
-    ];
-    fields.forEach(field => {
-      const li = document.createElement('li');
-      li.textContent = `${field.label}: ${field.value}`;
-      resumo.appendChild(li);
-    });
-  }
-
-  form.querySelectorAll('.proximo').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (form.checkValidity()) {
-        currentStep++;
-        if (currentStep >= steps.length) currentStep = steps.length - 1;
-        if(currentStep === steps.length -1) updateResumo();
-        showStep(currentStep);
-      } else {
-        form.reportValidity();
-      }
-    });
+function showStep(index) {
+  steps.forEach((step, i) => {
+    step.style.display = i === index ? 'block' : 'none';
   });
+}
 
-  form.querySelectorAll('.voltar').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentStep--;
-      if (currentStep < 0) currentStep = 0;
+function updateResumo() {
+  const resumo = document.getElementById('resumoCadastro');
+  resumo.innerHTML = '';
+  const fields = [
+    {label: 'Nome da Escola', value: form.EscolaNome.value},
+    {label: 'CNPJ', value: form.EscolaCNPJ.value},
+    {label: 'Endereço', value: form.EscolaEndereco.value},
+    {label: 'Nome do Responsável', value: form.ResponsavelNome.value},
+    {label: 'Email Institucional', value: form.CantEmail.value},
+  ];
+  fields.forEach(field => {
+    const li = document.createElement('li');
+    li.textContent = `${field.label}: ${field.value}`;
+    resumo.appendChild(li);
+  });
+}
+
+// Botões Próximo
+form.querySelectorAll('.proximo').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const camposAtuais = steps[currentStep].querySelectorAll('input, select, textarea');
+    let valido = true;
+    camposAtuais.forEach(input => {
+      if (!input.checkValidity()) valido = false;
+    });
+
+    if (valido) {
+      currentStep++;
+      if (currentStep >= steps.length) currentStep = steps.length - 1;
+      if(currentStep === steps.length -1) updateResumo();
       showStep(currentStep);
-    });
+    } else {
+      camposAtuais.forEach(input => input.reportValidity());
+    }
   });
+});
 
-  // Inicializa mostrando o primeiro passo
-  showStep(currentStep);
+// Botões Voltar
+form.querySelectorAll('.voltar').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentStep--;
+    if (currentStep < 0) currentStep = 0;
+    showStep(currentStep);
+  });
+});
+
+// Inicializa mostrando o primeiro passo
+showStep(currentStep);
   </script>
 
 </body>

@@ -140,6 +140,10 @@ if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
       <button class="botao" type="submit">
         <span class="texto">ENTRAR</span>
       </button>
+      
+    <div class="link">
+      <a href="lembrarSenha.php">Esqueci minha senha</a>
+    </div>
     </form>
 
     <!-- CADASTRO -->
@@ -160,20 +164,6 @@ if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
     </div>
 
     <div class="form-group">
-      <label for="escolaEndereco">Endereço</label>
-      <input type="text" id="escolaEndereco" name="EscolaEndereco" placeholder="Digite o endereço da escola" maxlength="150" required>
-    </div>
-
-    <div class="form-navigation">
-      <button type="button" class="botao proximo">Próximo →</button>
-    </div>
-  </fieldset>
-
-  <!-- Step 2: Dados do Responsável -->
-  <fieldset class="step step-2" style="display:none;">
-    <legend>Dados do Responsável</legend>
-
-    <div class="form-group">
       <label for="responsavelNome">Nome do Responsável</label>
       <input type="text" id="responsavelNome" name="ResponsavelNome" placeholder="Digite o nome do responsável" maxlength="70" required>
     </div>
@@ -188,6 +178,45 @@ if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
       <input type="password" id="senhaCantineiro" name="CantSenha" placeholder="Digite sua senha" required>
       <span class="ver-senha" onclick="toggleSenha('senhaCantineiro')">👁</span>
     </div>
+
+    <div class="form-navigation">
+      <button type="button" class="botao proximo">Próximo →</button>
+    </div>
+  </fieldset>
+
+  <!-- Step 2: Dados do Responsável -->
+  <fieldset class="step step-2" style="display:none;">
+    <legend>Endereço</legend>
+    
+<div class="form-group">
+  <label for="cep">CEP</label>
+  <input type="text" id="cep" name="cep" maxlength="9" placeholder="Digite o CEP" required>
+</div>
+<div class="form-group">
+  <label for="numero">Número</label>
+  <input type="text" id="numero" name="numero" placeholder="Número da escola" required>
+</div>
+<div class="form-group">
+  <label for="complemento">Complemento</label>
+  <input type="text" id="complemento" name="complemento" placeholder="Complemento">
+</div>
+<div class="form-group">
+  <label for="logradouro">Logradouro</label>
+  <input type="text" id="logradouro" name="logradouro" placeholder="Rua/Avenida" required>
+</div>
+<div class="form-group">
+  <label for="bairro">Bairro</label>
+  <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+</div>
+<div class="form-group">
+  <label for="cidade">Cidade</label>
+  <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+</div>
+<div class="form-group">
+  <label for="estado">Estado</label>
+  <input type="text" id="estado" name="estado" placeholder="Estado" required>
+</div>
+
 
     <div class="form-navigation">
       <button type="button" class="botao voltar">← Voltar</button>
@@ -209,12 +238,7 @@ if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
       </button>
     </div>
   </fieldset>
-
 </form>
-
-    <div class="link">
-      <a href="lembrarSenha.php">Esqueci minha senha</a>
-    </div>
 <script>
  function toggleSenha(id) {
   const input = document.getElementById(id);

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,6 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Admin</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
  <style>
     :root {
       --cor-fundo: #f8f2f3;
@@ -235,7 +240,8 @@
 <main class="conteudo">
   <!-- Dashboard -->
   <section id="dashboard" class="pagina">
-    <h1 id="titulo">Dashboard</h1>
+    <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+
 
     <div id="resumos" style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
       <div style="flex: 1; min-width: 200px; background: var(--cor-branco); border: 1px solid var(--cor-borda); border-radius: 8px; padding: 20px;">
@@ -276,8 +282,68 @@
   </section>
 
   <!-- Escolas -->
+<!-- Escolas -->
 <section id="escolas" class="pagina" style="display:none;">
-  <h1>Escolas</h1>
+  <h1 class="text-2xl font-bold mb-6">Escolas</h1>
+
+
+  <!-- Filtros -->
+<div class="flex gap-4 mb-3">
+
+  <!-- Filtro Plano -->
+  <div class="relative group rounded-lg w-40 bg-[var(--cor-branco)] overflow-hidden">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      class="w-6 h-6 absolute right-2 -rotate-45 stroke-[var(--cor-principal)] top-2 group-hover:rotate-0 duration-300"
+    >
+      <path
+        stroke-width="4"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        fill="none"
+        d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
+      ></path>
+    </svg>
+    <select id="filtroPlano"
+      class="appearance-none w-full bg-[var(--cor-branco)] border border-[var(--cor-principal)] text-[var(--cor-principal)] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--cor-principal-hover)]"
+    >
+      <option value="" disabled selected>Filtro: Planos</option>
+        <option value="">Todos</option>
+      <option value="Básico">Básico</option>
+      <option value="Médio">Médio</option>
+      <option value="Alto">Alto</option>
+    </select>
+  </div>
+
+  <!-- Filtro Status -->
+  <div class="relative group rounded-lg w-40 bg-[var(--cor-branco)] overflow-hidden">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      class="w-6 h-6 absolute right-2 -rotate-45 stroke-[var(--cor-principal)] top-2 group-hover:rotate-0 duration-300"
+    >
+      <path
+        stroke-width="4"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        fill="none"
+        d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
+      ></path>
+    </svg>
+    <select id="filtroStatus"
+      class="appearance-none relative bg-transparent ring-0 outline-none border border-[var(--cor-principal)] text-[var(--cor-principal)] text-sm font-semibold rounded-lg focus:ring-[var(--cor-principal-hover)] focus:border-[var(--cor-principal-hover)] block w-full p-2 pr-8"
+    >
+  <option value="" disabled selected>Filtro: Status</option>
+  <option value="">Todos</option>
+  <option value="ativa">Ativa</option>
+  <option value="inativa">Inativa</option>
+    </select>
+  </div>
+
+</div>
+
+
   <table id="tabelaEscolas" style="width:100%; border-collapse: collapse;">
     <thead>
       <tr>
@@ -296,6 +362,7 @@
   </table>
 </section>
 
+
   <!-- Histórico Financeiro -->
   <section id="financeiro" class="pagina" style="display:none;">
     <h1>Histórico Financeiro</h1>
@@ -308,11 +375,66 @@
     <div id="tabelaUsuarios">Tabela de usuários por escola...</div>
   </section>
 
-  <!-- Configurações -->
-  <section id="configuracoes" class="pagina" style="display:none;">
-    <h1>Configurações</h1>
-    <p>Aqui entram as opções do sistema.</p>
-  </section>
+<!-- Configurações -->
+<section id="configuracoes" class="pagina" style="display:none;">
+  <h1 class="text-2xl font-bold mb-6">Configurações</h1>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+      <h2 class="text-lg font-semibold mb-4 text-gray-800">Perfil</h2>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">E-mail</label>
+        <input type="email" value="usuario@email.com" 
+               class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" disabled>
+        <p class="text-xs text-gray-500 mt-1">O e-mail não pode ser alterado.</p>
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Nome</label>
+        <input type="text" value="Gabriel Souza" 
+       class="w-full mt-1 px-3 py-2 border border-[var(--cor-principal)] rounded-lg focus:ring-2 focus:ring-[var(--cor-principal-hover)] focus:outline-none">
+      </div>
+
+      <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition">
+        Salvar Alterações
+      </button>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+      <h2 class="text-lg font-semibold mb-4 text-gray-800">Segurança</h2>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Senha Atual</label>
+        <input type="password"  class="w-full mt-1 px-3 py-2 border border-[var(--cor-principal)] rounded-lg focus:ring-2 focus:ring-[var(--cor-principal-hover)] focus:outline-none">
+
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600">Nova Senha</label>
+        <input type="password"  class="w-full mt-1 px-3 py-2 border border-[var(--cor-principal)] rounded-lg focus:ring-2 focus:ring-[var(--cor-principal-hover)] focus:outline-none">
+      </div>
+      
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-600">Confirmar Nova Senha</label>
+        <input type="password"  class="w-full mt-1 px-3 py-2 border border-[var(--cor-principal)] rounded-lg focus:ring-2 focus:ring-[var(--cor-principal-hover)] focus:outline-none">
+      </div>
+
+      <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition">
+        Alterar Senha
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200 mt-6">
+    <h2 class="text-lg font-semibold mb-4 text-gray-800">Conta</h2>
+    <p class="text-sm text-gray-600 mb-4">Gerencie sua sessão e acesso ao sistema.</p>
+    <button id="btnSair" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition">
+      Sair da Conta
+    </button>
+  </div>
+</section>
+
 </main>
 
 <script>
@@ -356,7 +478,6 @@ document.addEventListener('DOMContentLoaded', () => {
       menuLateral.classList.toggle('aberto');
     });
   }
-
   // CARREGAR DASHBOARD
   async function carregarDashboard() {
     try {
@@ -371,7 +492,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('resumoCantineiros').textContent   = dados.usuariosResumo.cantineiro ?? 0;
       document.getElementById('resumoPedidosMes').textContent    = dados.pedidosMes ?? 0;
 
-      if (window.graficoFaturamento) window.graficoFaturamento.destroy();
+    if (window.graficoFaturamento instanceof Chart) {
+  window.graficoFaturamento.destroy();
+}
 
       const ctx = document.getElementById('graficoFaturamento').getContext('2d');
       window.graficoFaturamento = new Chart(ctx, {
@@ -401,9 +524,28 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {
       console.error('Erro ao carregar dashboard:', e);
       ['resumoEscolas','resumoAlunos','resumoResponsaveis','resumoCantineiros','resumoPedidosMes']
-        .forEach(id => document.getElementById(id).textContent = 'Erro');
+        .forEach(id => document.getElementById(id).textContent = 'Error');
     }
   }
+function aplicarFiltros() {
+  const plano = document.getElementById('filtroPlano').value.toLowerCase();
+  const status = document.getElementById('filtroStatus').value.toLowerCase();
+
+  const linhas = document.querySelectorAll('#tabelaEscolas tbody tr');
+  linhas.forEach(tr => {
+    const planoCell = tr.querySelector('td[data-label="Plano"]')?.textContent.toLowerCase() || '';
+    const statusCell = tr.querySelector('td[data-label="Status"]')?.textContent.toLowerCase() || '';
+
+    const mostraPlano = !plano || planoCell.includes(plano); // value="" = mostra tudo
+    const mostraStatus = !status || statusCell.includes(status); // value="" = mostra tudo
+
+    tr.style.display = (mostraPlano && mostraStatus) ? '' : 'none';
+  });
+}
+
+// Ativar filtros quando mudar os selects
+document.getElementById('filtroPlano').addEventListener('change', aplicarFiltros);
+document.getElementById('filtroStatus').addEventListener('change', aplicarFiltros);
 
   // CARREGAR ESCOLAS
   async function carregarEscolas() {
@@ -436,7 +578,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('dashboard').style.display = 'block';
+  
   carregarDashboard();
+
+});
+
+  document.getElementById('btnSair').addEventListener('click', () => {
+  window.location.href = 'logout.php';
 });
 </script>
 

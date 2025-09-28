@@ -1,9 +1,12 @@
 <?php
+
+session_start();
 header('Content-Type: application/json; charset=utf-8');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-session_start();include __DIR__ . "/../banco/conexao.php";
+include __DIR__ . "/../banco/conexao.php";
+
 if (!isset($_SESSION['admin_id'])) {
     http_response_code(401);
     echo json_encode(['erro' => 'Acesso não autorizado']);
@@ -31,7 +34,7 @@ try {
 
     $stmt = $pdo->query("
         SELECT COUNT(*) AS total 
-        FROM tb_pedidos 
+        FROM tb_pedido 
         WHERE MONTH(dt_pedido) = MONTH(CURDATE())
           AND YEAR(dt_pedido) = YEAR(CURDATE())
     ");
@@ -40,7 +43,7 @@ try {
     $graficoPedidos = array_fill(0, 12, 0);
     $stmt = $pdo->query("
         SELECT MONTH(dt_pedido) AS mes, COUNT(*) AS total
-        FROM tb_pedidos
+        FROM tb_pedido
         WHERE YEAR(dt_pedido) = YEAR(CURDATE())
         GROUP BY MONTH(dt_pedido)
     ");

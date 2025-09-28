@@ -21,32 +21,62 @@ if(isset($_POST['email']) && isset($_POST['senha'])){
 }
 
 // CADASTRO ESCOLA
-if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
-    // Verifica se o email já existe
-    $sql = "SELECT id_escola FROM tb_escola WHERE email_contato = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':email' => $_POST['CantEmail']]);
-    $existe = $stmt->fetchColumn();
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    if($existe){
-        echo "<script>alert('E-mail já cadastrado. Faça login.');</script>";
-    } else {
-        // Hash da senha
-        $senhaHash = password_hash($_POST['CantSenha'], PASSWORD_DEFAULT);
+    // valida campos obrigatórios
+    $camposObrigatorios = ['EscolaNome','EscolaCNPJ','ResponsavelNome','CantEmail','CantSenha','cep','logradouro','numero','bairro','cidade','estado'];
+    foreach($camposObrigatorios as $campo){
+        if(empty($_POST[$campo])){
+            die("O campo $campo é obrigatório.");
+        }
+    }
 
-        // Inserir dados da escola
-        $sql = "INSERT INTO tb_escola (nome, cnpj, email_contato, senha_hash, id_endereco /*, id_plano */)
-                VALUES (:nome, :cnpj, :email, :senha, NULL /*, NULL*/)";
+    // Hash da senha
+    $senhaHash = password_hash($_POST['CantSenha'], PASSWORD_DEFAULT);
+
+    // Complemento pode ser nulo
+    $complemento = $_POST['complemento'] ?? null;
+
+    try {
+        $pdo->beginTransaction();
+
+        // Inserir endereço
+        $sql = "INSERT INTO tb_endereco (cep, logradouro, numero, complemento, bairro, cidade, estado)
+                VALUES (:cep, :logradouro, :numero, :complemento, :bairro, :cidade, :estado)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':cep' => $_POST['cep'],
+            ':logradouro' => $_POST['logradouro'],
+            ':numero' => $_POST['numero'],
+            ':complemento' => $complemento,
+            ':bairro' => $_POST['bairro'],
+            ':cidade' => $_POST['cidade'],
+            ':estado' => $_POST['estado']
+        ]);
+        $idEndereco = $pdo->lastInsertId();
+
+        // Inserir escola
+        $sql = "INSERT INTO tb_escola (nome, cnpj, email_contato, senha_hash, nm_gerente, telefone_contato, id_endereco)
+                VALUES (:nome, :cnpj, :email, :senha, :gerente, :telefone, :endereco)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nome' => $_POST['EscolaNome'],
             ':cnpj' => $_POST['EscolaCNPJ'],
             ':email' => $_POST['CantEmail'],
-            ':senha' => $senhaHash
+            ':senha' => $senhaHash,
+            ':gerente' => $_POST['ResponsavelNome'],
+            ':telefone' => $_POST['CantEmail'], // se não tiver telefone, pode usar email ou null
+            ':endereco' => $idEndereco
         ]);
 
+        $pdo->commit();
+
         echo "<script>alert('Cadastro realizado com sucesso!');</script>";
-        echo "<script>window.location.href='index.php';</script>";
+        echo "<script>window.location.href='../index.php';</script>";
+
+    } catch(PDOException $e){
+        $pdo->rollBack();
+        die("Erro ao cadastrar escola: " . $e->getMessage());
     }
 }
 ?>
@@ -184,39 +214,38 @@ if(isset($_POST['CantEmail']) && isset($_POST['senhaCantineiro'])){
     </div>
   </fieldset>
 
-  <!-- Step 2: Dados do Responsável -->
+  <!-- Step 2: Dados do Endereço -->
   <fieldset class="step step-2" style="display:none;">
     <legend>Endereço</legend>
     
-<div class="form-group">
-  <label for="cep">CEP</label>
-  <input type="text" id="cep" name="cep" maxlength="9" placeholder="Digite o CEP" required>
-</div>
-<div class="form-group">
-  <label for="numero">Número</label>
-  <input type="text" id="numero" name="numero" placeholder="Número da escola" required>
-</div>
-<div class="form-group">
-  <label for="complemento">Complemento</label>
-  <input type="text" id="complemento" name="complemento" placeholder="Complemento">
-</div>
-<div class="form-group">
-  <label for="logradouro">Logradouro</label>
-  <input type="text" id="logradouro" name="logradouro" placeholder="Rua/Avenida" required>
-</div>
-<div class="form-group">
-  <label for="bairro">Bairro</label>
-  <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
-</div>
-<div class="form-group">
-  <label for="cidade">Cidade</label>
-  <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
-</div>
-<div class="form-group">
-  <label for="estado">Estado</label>
-  <input type="text" id="estado" name="estado" placeholder="Estado" required>
-</div>
-
+    <div class="form-group">
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" name="cep" maxlength="9" placeholder="Digite o CEP" required>
+    </div>
+    <div class="form-group">
+      <label for="numero">Número</label>
+      <input type="text" id="numero" name="numero" placeholder="Número da escola" required>
+    </div>
+    <div class="form-group">
+      <label for="complemento">Complemento</label>
+      <input type="text" id="complemento" name="complemento" placeholder="Complemento">
+    </div>
+    <div class="form-group">
+      <label for="logradouro">Logradouro</label>
+      <input type="text" id="logradouro" name="logradouro" placeholder="Rua/Avenida" required>
+    </div>
+    <div class="form-group">
+      <label for="bairro">Bairro</label>
+      <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+    </div>
+    <div class="form-group">
+      <label for="cidade">Cidade</label>
+      <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+    </div>
+    <div class="form-group">
+      <label for="estado">Estado</label>
+      <input type="text" id="estado" name="estado" placeholder="Estado" required>
+    </div>
 
     <div class="form-navigation">
       <button type="button" class="botao voltar">← Voltar</button>
@@ -332,6 +361,24 @@ form.querySelectorAll('.voltar').forEach(btn => {
 
 // Inicializa mostrando o primeiro passo
 showStep(currentStep);
+
+document.getElementById('cep').addEventListener('blur', function() {
+  const cep = this.value.replace(/\D/g, '');
+  if(cep.length === 8){
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then(res => res.json())
+      .then(data => {
+        if(!data.erro){
+          document.getElementById('logradouro').value = data.logradouro;
+          document.getElementById('bairro').value = data.bairro;
+          document.getElementById('cidade').value = data.localidade;
+          document.getElementById('estado').value = data.uf;
+        } else {
+          alert("CEP não encontrado!");
+        }
+      });
+  }
+});
   </script>
 
 </body>

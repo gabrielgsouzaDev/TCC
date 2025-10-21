@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -8,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
-
   <title>CTNAPP</title>
 </head>
 
@@ -16,18 +14,14 @@
 <img src="img/fundoInicio.svg" alt="Fundo do site" class="background-svg">
 <header class="bg-[var(--cor-fundo)] shadow-md">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <!-- Marca -->
     <h1 class="text-2xl font-bold text-[var(--cor-titulo)]">CTNAPP</h1>
 
-    <!-- Menu -->
     <nav class="flex space-x-8 relative">
 
-      <!-- Administrador -->
       <div class="relative group">
         <button class="px-4 py-2 bg-[var(--cor-principal)] text-[var(--cor-branco)] rounded-lg font-semibold hover:bg-[var(--cor-principal-hover)] transition">
           Administrador
         </button>
-        <!-- Submenu -->
         <div class="absolute left-0 mt-2 w-44 bg-[var(--cor-branco)] rounded-lg shadow-lg hidden group-hover:block z-10">
           <a href="auth/logAdmin.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Admin</a>
           <a href="auth/cadEscola.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Escola</a>
@@ -35,12 +29,10 @@
         </div>
       </div>
 
-      <!-- Usuário -->
       <div class="relative group">
         <button class="px-4 py-2 bg-[var(--cor-secundaria)] text-[var(--cor-branco)] rounded-lg font-semibold hover:bg-[var(--cor-principal-hover)] transition">
-          Usuário
+          Cliente
         </button>
-        <!-- Submenu -->
         <div class="absolute left-0 mt-2 w-44 bg-[var(--cor-branco)] rounded-lg shadow-lg hidden group-hover:block z-10">
           <a href="auth/logAluno.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Aluno</a>
           <a href="auth/logResponsavel.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]">Responsável</a>

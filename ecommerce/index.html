@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTNAPP - Cantina Escolar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --cor-fundo: #f8f2f3;
+      --cor-branco: #ffffff;
+      --cor-titulo: #7a1523;
+      --cor-texto: #4d4d4d;
+      --cor-borda: #d8b0b5;
+      --cor-principal: #a71d31;
+      --cor-principal-hover: #7a1523;
+      --cor-secundaria: #e57373;
+    }
+  </style>
+</head>
+<body class="bg-[var(--cor-fundo)] text-[var(--cor-texto)] font-sans">
+  
+  <!-- Navbar -->
+  <nav class="bg-[var(--cor-branco)] border-b border-[var(--cor-borda)] shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-[var(--cor-titulo)]">CTNAPP</h1>
+      <ul class="hidden md:flex space-x-8 font-medium">
+        <li><a href="#" class="hover:text-[var(--cor-principal)] flex items-center gap-1">⭐ Favoritos</a></li>
+        <li><a href="#" class="hover:text-[var(--cor-principal)] flex items-center gap-1">💰 Saldo</a></li>
+      </ul>
+      <button class="relative bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-4 py-2 rounded-lg">
+        🛒 Carrinho
+        <span class="absolute -top-2 -right-2 bg-[var(--cor-secundaria)] text-xs px-2 py-1 rounded-full">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Banner -->
+  <header class="bg-[var(--cor-principal)] text-[var(--cor-branco)] py-16">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-bold">Cantina Escolar Simplificada</h2>
+      <p class="mt-3 text-lg">Peça seus lanches, salgados, doces e bebidas direto do sistema da escola.</p>
+    </div>
+  </header>
+
+  <!-- Filtros -->
+  <section class="max-w-7xl mx-auto px-6 py-6 text-center">
+    <div class="flex justify-center gap-4 flex-wrap">
+      <button onclick="filtrarProdutos('todos')" class="filtro bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-4 py-2 rounded-lg">Todos</button>
+      <button onclick="filtrarProdutos('salgado')" class="filtro bg-[var(--cor-branco)] border border-[var(--cor-borda)] hover:bg-[var(--cor-secundaria)] hover:text-white px-4 py-2 rounded-lg">Salgados</button>
+      <button onclick="filtrarProdutos('doce')" class="filtro bg-[var(--cor-branco)] border border-[var(--cor-borda)] hover:bg-[var(--cor-secundaria)] hover:text-white px-4 py-2 rounded-lg">Doces</button>
+      <button onclick="filtrarProdutos('bebida')" class="filtro bg-[var(--cor-branco)] border border-[var(--cor-borda)] hover:bg-[var(--cor-secundaria)] hover:text-white px-4 py-2 rounded-lg">Bebidas</button>
+    </div>
+  </section>
+
+  <!-- Produtos -->
+  <section class="max-w-7xl mx-auto px-6 py-12">
+    <h3 class="text-2xl font-bold text-[var(--cor-titulo)] mb-6">Cardápio</h3>
+    <div id="produtos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      
+      <!-- Produto (categoria = salgado) -->
+      <div class="produto salgado bg-[var(--cor-branco)] border border-[var(--cor-borda)] rounded-xl shadow hover:shadow-lg transition">
+        <img src="https://dummyimage.com/450x300/e57373/fff&text=Coxinha" class="rounded-t-xl w-full h-48 object-cover" alt="Coxinha">
+        <div class="p-4 text-center">
+          <h4 class="font-bold text-lg text-[var(--cor-titulo)]">Coxinha</h4>
+          <p class="mt-2 text-[var(--cor-texto)]">R$ 5,00</p>
+          <button class="mt-4 w-full bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-3 py-2 rounded-lg">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- Produto (categoria = bebida) -->
+      <div class="produto bebida bg-[var(--cor-branco)] border border-[var(--cor-borda)] rounded-xl shadow hover:shadow-lg transition">
+        <img src="https://dummyimage.com/450x300/d8b0b5/fff&text=Refrigerante" class="rounded-t-xl w-full h-48 object-cover" alt="Refrigerante">
+        <div class="p-4 text-center">
+          <h4 class="font-bold text-lg text-[var(--cor-titulo)]">Refrigerante</h4>
+          <p class="mt-2 text-[var(--cor-texto)]">R$ 6,50</p>
+          <button class="mt-4 w-full bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-3 py-2 rounded-lg">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- Produto (categoria = doce) -->
+      <div class="produto doce bg-[var(--cor-branco)] border border-[var(--cor-borda)] rounded-xl shadow hover:shadow-lg transition">
+        <img src="https://dummyimage.com/450x300/f8f2f3/7a1523&text=Brigadeiro" class="rounded-t-xl w-full h-48 object-cover" alt="Brigadeiro">
+        <div class="p-4 text-center">
+          <h4 class="font-bold text-lg text-[var(--cor-titulo)]">Brigadeiro</h4>
+          <p class="mt-2 text-[var(--cor-texto)]">R$ 2,00</p>
+          <button class="mt-4 w-full bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-3 py-2 rounded-lg">Adicionar</button>
+        </div>
+      </div>
+
+      <!-- Produto (categoria = salgado) -->
+      <div class="produto salgado bg-[var(--cor-branco)] border border-[var(--cor-borda)] rounded-xl shadow hover:shadow-lg transition">
+        <img src="https://dummyimage.com/450x300/a71d31/fff&text=Pastel" class="rounded-t-xl w-full h-48 object-cover" alt="Pastel">
+        <div class="p-4 text-center">
+          <h4 class="font-bold text-lg text-[var(--cor-titulo)]">Pastel</h4>
+          <p class="mt-2 text-[var(--cor-texto)]">R$ 7,00</p>
+          <button class="mt-4 w-full bg-[var(--cor-principal)] hover:bg-[var(--cor-principal-hover)] text-white px-3 py-2 rounded-lg">Adicionar</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="bg-[var(--cor-titulo)] text-[var(--cor-branco)] py-6 text-center">
+    <p>&copy; 2025 CTNAPP - Cantina Escolar</p>
+  </footer>
+
+  <!-- JS Filtro -->
+  <script>
+    function filtrarProdutos(categoria) {
+      const produtos = document.querySelectorAll(".produto");
+      produtos.forEach(produto => {
+        if (categoria === "todos") {
+          produto.classList.remove("hidden");
+        } else {
+          produto.classList.add("hidden");
+          if (produto.classList.contains(categoria)) {
+            produto.classList.remove("hidden");
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

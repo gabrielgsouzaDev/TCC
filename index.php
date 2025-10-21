@@ -7,27 +7,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <title>CTNAPP</title>
 </head>
 
 <body>
 <img src="img/fundoInicio.svg" alt="Fundo do site" class="background-svg">
-  <header class="topo">
-    <div class="conteudo-topo">
-        <h1 class="marca">CTNAPP</h1>
-      <nav class="menu">
-        <a href="auth/logAdmin.php" class="botao cadastrar">
-          <div class="texto">Admin</div>
-        </a>
-        <a href="auth/cadEscola.php" class="botao entrar">
-          <div class="texto">Escola</div>
-        </a>
-        <a href="auth/logCantineiro.php" class="botao cadastrar">
-          <div class="texto">Cantineiro</div>
-        </a>
-      </nav>
-    </div>
-  </header>
+<header class="bg-[var(--cor-fundo)] shadow-md">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <!-- Marca -->
+    <h1 class="text-2xl font-bold text-[var(--cor-titulo)]">CTNAPP</h1>
+
+    <!-- Menu -->
+    <nav class="flex space-x-8 relative">
+
+      <!-- Administrador -->
+      <div class="relative group">
+        <button class="px-4 py-2 bg-[var(--cor-principal)] text-[var(--cor-branco)] rounded-lg font-semibold hover:bg-[var(--cor-principal-hover)] transition">
+          Administrador
+        </button>
+        <!-- Submenu -->
+        <div class="absolute left-0 mt-2 w-44 bg-[var(--cor-branco)] rounded-lg shadow-lg hidden group-hover:block z-10">
+          <a href="auth/logAdmin.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Admin</a>
+          <a href="auth/cadEscola.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Escola</a>
+          <a href="auth/logCantineiro.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]">Cantineiro</a>
+        </div>
+      </div>
+
+      <!-- Usuário -->
+      <div class="relative group">
+        <button class="px-4 py-2 bg-[var(--cor-secundaria)] text-[var(--cor-branco)] rounded-lg font-semibold hover:bg-[var(--cor-principal-hover)] transition">
+          Usuário
+        </button>
+        <!-- Submenu -->
+        <div class="absolute left-0 mt-2 w-44 bg-[var(--cor-branco)] rounded-lg shadow-lg hidden group-hover:block z-10">
+          <a href="auth/logAluno.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)] border-b border-[var(--cor-borda)]">Aluno</a>
+          <a href="auth/logResponsavel.php" class="block px-4 py-2 text-[var(--cor-texto)] hover:bg-[var(--cor-fundo)]">Responsável</a>
+        </div>
+      </div>
+
+    </nav>
+  </div>
+</header>
+
+
 
 <!--<div id="modalApp">
     <div class="modal-conteudo">
@@ -54,7 +78,7 @@ window.onload = abrirModal;
       <h2 class="apresentacao-titulo">Transforme a cantina da sua escola</h2>
       <p class="apresentacao-texto" style="color: black;">A gestão da cantina escolar nunca foi tão simples. Elimine filas, facilite o controle de pedidos e traga mais praticidade para alunos, pais e funcionários. Tudo na palma da mão, com eficiência e segurança. Transforme a cantina da sua escola hoje mesmo!
       </p>
-      <a href="auth/escola.php" class="botao destaque">
+      <a href="auth/cadEscola.php" class="botao destaque">
         <div class="texto">Comece agora</div>
       </a>
     </section>

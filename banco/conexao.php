@@ -1,5 +1,5 @@
 <?php
-$host = 'db';
+$host = 'https://tcc-mg7u.onrender.com/';
 $dbname = 'ctnapp';
 $username = 'root';
 $password = 'root';

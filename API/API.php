@@ -3,16 +3,17 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-require_once __DIR__ . '/../banco/conexao.php';
-require_once __DIR__ . '/../banco/functions.php';
-require_once __DIR__ . '/auth_controller.php';
+require_once __DIR__ . '../banco/conexao.php';
+require_once __DIR__ . '../banco/functions.php';
+require_once __DIR__ . 'auth_controller.php';
+require_once __DIR__ . 'firebase.php';
+
 
 $dados = json_decode(file_get_contents('php://input'), true);
 $action = $_GET['action'] ?? '';
 
 switch ($action) {
 
-    //  CANTINAS 
     case 'listarCantinas':
         $id_escola = $_GET['id_escola'] ?? null;
         if (!$id_escola) jsonResponse(["erro" => "id_escola é obrigatório"], 400);
@@ -26,7 +27,6 @@ switch ($action) {
         jsonResponse($cantinas);
         break;
 
-    //  PRODUTOS 
     case 'listarProdutos':
         $id_cantina = $_GET['id_cantina'] ?? null;
         if (!$id_cantina) jsonResponse(["erro" => "id_cantina é obrigatório"], 400);
@@ -39,7 +39,6 @@ switch ($action) {
         jsonResponse($produtos);
         break;
 
-    //  PEDIDOS 
     case 'fazerPedido':
         validarCampos(["id_aluno", "id_cantina", "itens"], $dados);
 
@@ -68,7 +67,6 @@ switch ($action) {
         }
         break;
 
-    //  SALDO 
     case 'getSaldo':
         $id_aluno = $_GET['id_aluno'] ?? null;
         if (!$id_aluno) jsonResponse(["erro" => "id_aluno é obrigatório"], 400);
@@ -90,8 +88,7 @@ switch ($action) {
 
         jsonResponse(["sucesso" => $ok]);
         break;
-
-    //  HISTÓRICO 
+ 
     case 'historicoPedidos':
         $id_aluno = $_GET['id_aluno'] ?? null;
         if (!$id_aluno) jsonResponse(["erro" => "id_aluno é obrigatório"], 400);
@@ -112,7 +109,6 @@ switch ($action) {
         jsonResponse($historico);
         break;
 
-    //  AUTENTICAÇÃO RESPONSÁVEL 
     case 'cadastrarResponsavel':
         validarCampos(["nome", "email", "senha", "raAluno"], $dados);
         $resp = cadastrarResponsavel($dados["nome"], $dados["email"], $dados["senha"], $dados["raAluno"]);

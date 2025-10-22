@@ -1,5 +1,5 @@
 <?php
-$host = 'tcc-db-abc123.onrender.com';
+$host = 'localhost';
 $dbname = 'ctnapp';
 $username = 'root';
 $password = 'root';
